@@ -1,0 +1,13 @@
+# dependencies and build output
+node_modules/
+.next/
+out/
+
+# local tooling and operating-system files
+.DS_Store
+*.log
+
+# deployment and local environment configuration
+.vercel/
+.env*
+!.env.example
