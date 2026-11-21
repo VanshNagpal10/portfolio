@@ -1,0 +1,67 @@
+import { useEffect, useState } from "react";
+
+declare global {
+  interface BatteryManager extends EventTarget {
+    charging: boolean;
+    chargingTime: number;
+    dischargingTime: number;
+    level: number;
+  }
+
+  interface Navigator {
+    getBattery?: () => Promise<BatteryManager>;
+  }
+}
+
+const noop = () => {};
+
+const useBattery = () => {
+  const [chargePercent, setChargePercent] = useState<number>(100);
+  const [isCharging, setIsCharging] = useState<boolean>(false);
+
+  useEffect(() => {
+    let detachListeners: () => void = noop;
+
+    const attachListeners = async () => {
+      if (!navigator.getBattery) {
+        return;
+      }
+
+      try {
+        const batteryManager = await navigator.getBattery();
+
+        const onLevelChange = () => {
+          setChargePercent(Math.round(batteryManager.level * 100));
+        };
+
+        const onChargingChange = () => {
+          setIsCharging(batteryManager.charging);
+        };
+
+        batteryManager.addEventListener("levelchange", onLevelChange);
+        batteryManager.addEventListener("chargingchange", onChargingChange);
+
+        onLevelChange();
+        onChargingChange();
+
+        detachListeners = () => {
+          batteryManager.removeEventListener("levelchange", onLevelChange);
+          batteryManager.removeEventListener("chargingchange", onChargingChange);
+        };
+      } catch (e) {
+        // failed to attach handlers
+      }
+    };
+
+    attachListeners();
+
+    return () => detachListeners();
+  }, [setChargePercent, setIsCharging]);
+
+  return {
+    chargePercent,
+    isCharging,
+  };
+};
+
+export default useBattery;
