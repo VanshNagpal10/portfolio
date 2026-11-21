@@ -1,7 +1,14 @@
-import Portfolio from "../components/Portfolio";
+"use client";
 
-export const dynamic = "force-dynamic";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const Ipod = dynamic(() => import("@/components/Ipod/Ipod"), { ssr: false });
 
 export default function Home() {
-  return <Portfolio page="home" />;
+  return (
+    <Suspense>
+      <Ipod />
+    </Suspense>
+  );
 }

@@ -1,11 +1,23 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import StyledComponentsRegistry from "@/lib/registry";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Vansh Nagpal — iPad Classic OS",
-  description: "The portfolio of Vansh Nagpal, Full-stack, iOS and design engineer.",
+  title: "Vansh Nagpal — Portfolio",
+  description: "The portfolio of Vansh Nagpal, presented through a classic iPod interface.",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+      </body>
+    </html>
+  );
 }
