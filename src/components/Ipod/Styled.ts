@@ -42,6 +42,35 @@ export const Shell = styled.div<{ $deviceTheme: DeviceThemeName }>`
   }
 `;
 
+export const HeadphoneJackPort = styled.div<{ $isNear?: boolean; $isPlugged?: boolean }>`
+  position: absolute;
+  top: 6px;
+  left: 32px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #181818 0%, #000000 65%, #2a2a2a 100%);
+  border: 1.5px solid #777777;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.95), 0 1px 1px rgba(255, 255, 255, 0.25);
+  z-index: 10;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+
+  ${({ $isNear }) =>
+    $isNear &&
+    `
+    border-color: #388EE9;
+    box-shadow: 0 0 14px #388EE9, inset 0 0 5px #388EE9;
+    transform: scale(1.2);
+  `}
+
+  ${({ $isPlugged }) =>
+    $isPlugged &&
+    `
+    border-color: #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  `}
+`;
+
 export const ScreenContainer = styled.div`
   position: relative;
   height: 260px;

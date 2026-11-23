@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { playClickTick, toggleAudioMute, isMuted } from "@/utils/audio";
+import { useAudio } from "@/context/AudioContext";
 
 interface OSStatusBarProps {
   title?: string;
@@ -74,6 +75,33 @@ const AvailabilityPill = styled.div`
   font-weight: 600;
   color: #4ade80;
   letter-spacing: 0.03em;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+`;
+
+const NowPlayingPill = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: rgba(56, 142, 233, 0.12);
+  border: 1px solid rgba(56, 142, 233, 0.35);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #93c5fd;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(56, 142, 233, 0.22);
+    border-color: rgba(56, 142, 233, 0.6);
+    color: #ffffff;
+  }
 
   @media (max-width: 640px) {
     display: none;
@@ -179,6 +207,7 @@ const IconButton = styled.button`
 export default function OSStatusBar({ title }: OSStatusBarProps) {
   const [time, setTime] = useState("");
   const [muted, setMuted] = useState(false);
+  const { isPlugged, isPlaying, currentTrack, togglePlay } = useAudio();
 
   useEffect(() => {
     setMuted(isMuted());
@@ -219,6 +248,16 @@ export default function OSStatusBar({ title }: OSStatusBarProps) {
           <PulsingDot />
           <span>OPEN TO ROLES</span>
         </AvailabilityPill>
+        {isPlugged && currentTrack && (
+          <NowPlayingPill onClick={() => togglePlay()} title="Click to Play/Pause">
+            <span style={{ color: isPlaying ? "#4ade80" : "#fbbf24" }}>
+              {isPlaying ? "♪" : "❚❚"}
+            </span>
+            <span>
+              {isPlaying ? "Now Playing:" : "Paused:"} {currentTrack.name}
+            </span>
+          </NowPlayingPill>
+        )}
       </LeftSection>
 
       {title && <CenterSection>{title}</CenterSection>}

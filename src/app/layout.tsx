@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import StyledComponentsRegistry from "@/lib/registry";
+import { AudioProvider } from "@/context/AudioContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <AudioProvider>{children}</AudioProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

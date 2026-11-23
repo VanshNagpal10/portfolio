@@ -1,6 +1,7 @@
 import BatteryIndicator from "@/components/BatteryIndicator";
 import { useViewContext } from "@/hooks";
 import styled from "styled-components";
+import { useAudio } from "@/context/AudioContext";
 
 const Container = styled.div`
   display: flex;
@@ -13,6 +14,16 @@ const Container = styled.div`
   min-width: 0;
 `;
 
+const PlayTriangle = styled.span`
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 6px solid #222;
+  margin-right: 6px;
+`;
+
 const Text = styled.h3`
   margin: 0;
   font-size: 13px;
@@ -21,6 +32,8 @@ const Text = styled.h3`
   text-overflow: ellipsis;
   min-width: 0;
   flex: 1;
+  display: flex;
+  align-items: center;
 `;
 
 const StyledBatteryIndicator = styled(BatteryIndicator)`
@@ -29,10 +42,14 @@ const StyledBatteryIndicator = styled(BatteryIndicator)`
 
 const Header = () => {
   const { headerTitle } = useViewContext();
+  const { isPlugged, isPlaying } = useAudio();
 
   return headerTitle ? (
     <Container>
-      <Text>{headerTitle}</Text>
+      <Text>
+        {isPlugged && isPlaying && <PlayTriangle title="Now Playing" />}
+        {headerTitle}
+      </Text>
       <StyledBatteryIndicator />
     </Container>
   ) : null;
