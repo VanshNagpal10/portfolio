@@ -3,48 +3,67 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { NavBar } from "@/components/ui/tubelight-navbar";
-import ShuffleDock from "@/components/os/ShuffleDock";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import {
-  SPOTLIGHT_HONORS,
   HACKATHON_TRACKS,
   NOTABLE_PARTICIPATIONS,
   HackathonTrack,
 } from "@/data/honors";
 import { playClickTick, playConfirmChime } from "@/utils/audio";
+import {
+  Trophy,
+  Award,
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
+  ShieldCheck,
+  CheckCircle2,
+} from "lucide-react";
+
+/* ------------------------------------------------------------------ */
+/*  Styled Components                                                 */
+/* ------------------------------------------------------------------ */
 
 const PageWrapper = styled.div`
   min-height: 100vh;
-  background: radial-gradient(circle at 50% 0%, #14161c 0%, #090a0d 100%);
-  color: #f3f4f6;
+  background-color: #08090c;
+  background-image: 
+    radial-gradient(circle at 80% 15%, rgba(56, 142, 233, 0.08) 0%, transparent 55%),
+    radial-gradient(circle at 20% 60%, rgba(245, 158, 11, 0.04) 0%, transparent 50%),
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px;
+  color: #f1f5f9;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
   padding-bottom: 120px;
   position: relative;
+  overflow-x: hidden;
 `;
 
-const ContentContainer = styled.main`
-  max-width: 1080px;
+const MainContent = styled.main`
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 84px 24px 40px;
+  padding: 96px 36px 64px;
+  box-sizing: border-box;
 
-  @media (max-width: 768px) {
-    padding: 72px 16px 24px;
+  @media (max-width: 1024px) {
+    padding: 80px 20px 48px;
   }
 `;
 
-const HeaderArea = styled.header`
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 28px;
-  margin-bottom: 36px;
+/* Page Header */
+const PageHeader = styled.header`
+  margin-bottom: 48px;
 `;
 
-const Tagline = styled.div`
+const CatalogTag = styled.div`
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
-  letter-spacing: 0.1em;
-  color: #388ee9;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  color: #f59e0b;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -54,270 +73,483 @@ const Tagline = styled.div`
     display: inline-block;
     width: 6px;
     height: 6px;
-    background: #388ee9;
+    background: #f59e0b;
     border-radius: 50%;
+    box-shadow: 0 0 8px #f59e0b;
   }
 `;
 
-const MainHeading = styled.h1`
-  font-size: clamp(28px, 4vw, 42px);
+const MainTitle = styled.h1`
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  font-size: clamp(32px, 4vw, 46px);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   margin: 0 0 12px;
-  background: linear-gradient(180deg, #ffffff 0%, #c4c8d8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ffffff;
 `;
 
 const Subtitle = styled.p`
   margin: 0;
-  font-size: 15px;
-  color: #9aa1b2;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #94a3b8;
   max-width: 720px;
 `;
 
-const SpotlightGrid = styled.div`
+/* ------------------------------------------------------------------ */
+/*  1. Hero Band: Apple Swift Student Challenge 2026 (Full-Width)      */
+/* ------------------------------------------------------------------ */
+
+const HeroBandWrapper = styled.section`
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 56px 0;
+  margin-bottom: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-  margin-bottom: 48px;
-`;
+  grid-template-columns: 1.35fr 0.85fr;
+  gap: 48px;
+  align-items: center;
 
-const SpotlightCard = styled.div`
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    border-color: rgba(56, 142, 233, 0.4);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 142, 233, 0.12);
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 40px 0;
   }
 `;
 
-const SpotlightTop = styled.div`
-  margin-bottom: 20px;
-`;
-
-const BadgeRow = styled.div`
+const HeroBandLeft = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
+  flex-direction: column;
 `;
 
-const HonorBadge = styled.span`
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 10px;
+const HeroKicker = styled.div`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #388ee9;
-  background: rgba(56, 142, 233, 0.12);
-  border: 1px solid rgba(56, 142, 233, 0.3);
-  padding: 3px 8px;
-  border-radius: 12px;
-`;
-
-const HonorYear = styled.span`
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11.5px;
-  color: #8892a4;
-`;
-
-const HonorTitle = styled.h2`
-  font-size: 19px;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 8px;
-  line-height: 1.35;
-`;
-
-const HonorIssuer = styled.div`
-  font-size: 13px;
-  color: #9aa1b2;
   margin-bottom: 12px;
-`;
-
-const HonorDescription = styled.p`
-  font-size: 13.5px;
-  color: #c4c8d4;
-  line-height: 1.55;
-  margin: 0 0 16px;
-`;
-
-const ProjectBasisTag = styled.div`
-  font-size: 12px;
-  color: #9aa1b2;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 6px 12px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-`;
-
-const TableSection = styled.section`
-  margin-top: 48px;
-`;
-
-const SectionHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 8px;
+
+  span.apple-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #388ee9;
+    box-shadow: 0 0 8px #388ee9;
+  }
+`;
+
+const HeroTitle = styled.h2`
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  margin: 0 0 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
+const HeroDescription = styled.p`
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: #cbd5e1;
+  margin: 0 0 24px;
+  max-width: 640px;
+
+  strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+`;
+
+const HeroSpecTags = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+`;
+
+const SpecPill = styled.span`
+  padding: 4px 11px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  span.icon {
+    color: #388ee9;
+  }
+`;
+
+/* Apple Showcase Badge (Right Column) */
+const HeroShowcaseBadge = styled.div`
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(56, 142, 233, 0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+`;
+
+const AppleEmblemIcon = styled.div`
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #242630 0%, #15161d 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+`;
+
+const ShowcaseTitle = styled.div`
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin-bottom: 4px;
+`;
+
+const ShowcaseSub = styled.div`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #388ee9;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+`;
+
+const ShowcaseVerifiedPill = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4ade80;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: ui-monospace, monospace;
+`;
+
+/* ------------------------------------------------------------------ */
+/*  2. Secondary Band: Reliance Foundation Scholar (Compact Row)       */
+/* ------------------------------------------------------------------ */
+
+const SecondaryBand = styled.section`
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px 0;
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 64px;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+`;
+
+const SecondaryLeft = styled.div`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  text-transform: uppercase;
+`;
+
+const SecondaryCenter = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  span.title {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+  }
+
+  span.desc {
+    font-size: 13.5px;
+    color: #94a3b8;
+    line-height: 1.5;
+  }
+`;
+
+const SecondaryRight = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MeritBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.32);
+  border-radius: 20px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #4ade80;
+  text-transform: uppercase;
+  white-space: nowrap;
+`;
+
+/* ------------------------------------------------------------------ */
+/*  3. The 9× Hackathon Winning Ledger (iTunes / Editorial Table)      */
+/* ------------------------------------------------------------------ */
+
+const LedgerSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 56px;
+`;
+
+const LedgerHeaderArea = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
   flex-wrap: wrap;
   gap: 16px;
 `;
 
-const SectionHeading = styled.h2`
-  font-size: 22px;
+const LedgerKicker = styled.div`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
   font-weight: 700;
-  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #388ee9;
+  margin-bottom: 6px;
+`;
+
+const LedgerTitle = styled.h2`
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: #ffffff;
+  margin: 0;
 `;
 
-const FilterTabs = styled.div`
-  display: flex;
+const LedgerSubtitle = styled.p`
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #94a3b8;
+`;
+
+const LedgerCountBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
   gap: 6px;
+  padding: 6px 14px;
   background: rgba(255, 255, 255, 0.04);
-  padding: 3px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-`;
-
-const TabButton = styled.button<{ $active: boolean }>`
-  background: ${(props) =>
-    props.$active
-      ? "linear-gradient(180deg, #388ee9 0%, #1754be 100%)"
-      : "transparent"};
-  color: ${(props) => (props.$active ? "#ffffff" : "#9aa1b2")};
-  border: none;
-  padding: 5px 12px;
-  border-radius: 7px;
-  font-size: 11.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s ease;
-
-  &:hover {
-    color: #ffffff;
-  }
-`;
-
-const TableWrapper = styled.div`
-  background: rgba(20, 22, 28, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #cbd5e1;
 `;
 
-const Table = styled.table`
+/* Table Framework */
+const TableWrapper = styled.div`
   width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 13px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
 `;
 
-const TableHead = styled.thead`
-  background: rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+const TableHeaderRow = styled.div`
+  display: grid;
+  grid-template-columns: 50px 2.2fr 1.4fr 2fr 90px 40px;
+  align-items: center;
+  padding: 12px 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
-  th {
-    padding: 12px 16px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #8892a4;
-  }
-`;
-
-const TableRow = styled.tr<{ $selected: boolean }>`
-  cursor: pointer;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  background: ${(props) =>
-    props.$selected
-      ? "linear-gradient(180deg, #388ee9 0%, #1754be 100%) !important"
-      : "transparent"};
-  color: ${(props) => (props.$selected ? "#ffffff" : "inherit")};
-  transition: background 0.1s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.035);
-  }
-
-  td {
-    padding: 14px 16px;
-    vertical-align: middle;
+  @media (max-width: 900px) {
+    grid-template-columns: 40px 2fr 1.5fr 1fr 40px;
+    div.col-project {
+      display: none;
+    }
   }
 
   @media (max-width: 640px) {
-    td:nth-child(3),
-    td:nth-child(4) {
+    grid-template-columns: 36px 1fr 1fr 32px;
+    div.col-year, div.col-project {
       display: none;
     }
   }
 `;
 
-const TrackNumberCell = styled.td`
+const TableRow = styled.div<{ $isExpanded: boolean }>`
+  position: relative;
+  display: grid;
+  grid-template-columns: 50px 2.2fr 1.4fr 2fr 90px 40px;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  user-select: none;
+  background: ${({ $isExpanded }) =>
+    $isExpanded
+      ? "linear-gradient(90deg, rgba(56, 142, 233, 0.12) 0%, rgba(56, 142, 233, 0.02) 100%)"
+      : "transparent"};
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    background: linear-gradient(90deg, rgba(56, 142, 233, 0.14) 0%, rgba(56, 142, 233, 0.03) 100%);
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 40px 2fr 1.5fr 1fr 40px;
+    div.col-project {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 36px 1fr 1fr 32px;
+    div.col-year, div.col-project {
+      display: none;
+    }
+  }
+`;
+
+const ColIndex = styled.div`
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  font-weight: 600;
-  width: 44px;
-  color: #8892a4;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
 `;
 
-const EventName = styled.span`
-  font-weight: 600;
-  color: #ffffff;
-  display: block;
+const ColEvent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: 12px;
+
+  span.event-name {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+  }
+
+  span.organizer {
+    font-size: 11.5px;
+    color: #64748b;
+  }
 `;
 
-const AwardPill = styled.span<{ $tier: string; $selected: boolean }>`
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  background: ${(props) =>
-    props.$selected
-      ? "rgba(255, 255, 255, 0.25)"
-      : props.$tier === "Winner"
-      ? "rgba(34, 197, 94, 0.15)"
-      : "rgba(56, 142, 233, 0.15)"};
-  color: ${(props) =>
-    props.$selected
-      ? "#ffffff"
-      : props.$tier === "Winner"
-      ? "#4ade80"
-      : "#60a5fa"};
-  border: 1px solid
-    ${(props) =>
-      props.$selected
-        ? "rgba(255, 255, 255, 0.3)"
-        : props.$tier === "Winner"
-        ? "rgba(34, 197, 94, 0.3)"
-        : "rgba(56, 142, 233, 0.3)"};
+const ColProject = styled.div`
+  display: flex;
+  align-items: center;
+
+  span.project-tag {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #cbd5e1;
+  }
 `;
 
-const DetailDrawer = styled.div`
-  margin-top: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(56, 142, 233, 0.3);
-  border-radius: 12px;
-  padding: 20px;
-  animation: fadeIn 0.2s ease;
+const ColPlacement = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 
-  @keyframes fadeIn {
+  span.award {
+    font-size: 13px;
+    font-weight: 600;
+    color: #388ee9;
+  }
+
+  span.prize {
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    color: #94a3b8;
+  }
+`;
+
+const ColYear = styled.div`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  color: #64748b;
+`;
+
+const ColAction = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #64748b;
+`;
+
+/* Inline Detail Drawer (Slide Open on Row Click) */
+const DetailDrawer = styled.div<{ $isOpen: boolean }>`
+  display: ${({ $isOpen }) => ($isOpen ? "grid" : "none")};
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  padding: 24px 20px 28px 50px;
+  background: rgba(13, 15, 20, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  animation: drawerSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @keyframes drawerSlide {
     from {
       opacity: 0;
       transform: translateY(-6px);
@@ -327,268 +559,354 @@ const DetailDrawer = styled.div`
       transform: translateY(0);
     }
   }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    padding: 20px 16px;
+  }
 `;
 
-const AdditionalSection = styled.section`
-  margin-top: 48px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
-  padding: 24px;
+const DrawerLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `;
 
-const AdditionalTitle = styled.h3`
+const DrawerTitle = styled.div`
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: #ffffff;
-  margin: 0 0 16px;
   display: flex;
   align-items: center;
   gap: 8px;
 `;
 
-const ParticipationsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 10px;
+const DrawerDesc = styled.p`
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin: 0;
 `;
 
-const ParticipationItem = styled.div`
+const DrawerMetaRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+`;
+
+const MetaChip = styled.span`
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3px 8px;
+  border-radius: 4px;
+`;
+
+const DrawerRight = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+/* Stage Proof Card inside Drawer (replaces dashed certificate placeholder) */
+const StageProofCard = styled.div`
+  background: linear-gradient(145deg, #181a22 0%, #0f1015 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 24px rgba(0, 0, 0, 0.4);
+`;
+
+const StageProofHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+`;
+
+const StageProofTitle = styled.div`
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+  line-height: 1.4;
+`;
+
+const StageVerifiedTag = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #4ade80;
+  text-transform: uppercase;
+`;
+
+/* ------------------------------------------------------------------ */
+/*  4. Notable Participations Honor Roll                              */
+/* ------------------------------------------------------------------ */
+
+const NotableSection = styled.section`
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+`;
+
+const NotableHeading = styled.h3`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin: 0 0 16px;
+`;
+
+const NotableChipsGrid = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 12.5px;
-  color: #c4c8d4;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 10px 14px;
-  border-radius: 8px;
+  flex-wrap: wrap;
+`;
 
-  &::before {
-    content: "•";
-    color: #388ee9;
-    font-size: 18px;
-    line-height: 0;
+const NotableChip = styled.span`
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  font-size: 12.5px;
+  color: #94a3b8;
+  letter-spacing: 0.01em;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(56, 142, 233, 0.35);
+    color: #ffffff;
+    transform: translateY(-1px);
   }
 `;
 
 export default function HonorsPage() {
-  const [filterTier, setFilterTier] = useState<"ALL" | "Winner" | "Runner-Up" | "Special">("ALL");
-  const [selectedTrack, setSelectedTrack] = useState<HackathonTrack | null>(HACKATHON_TRACKS[0]);
+  const [expandedTrack, setExpandedTrack] = useState<string | null>("01");
 
-  const filteredTracks =
-    filterTier === "ALL"
-      ? HACKATHON_TRACKS
-      : HACKATHON_TRACKS.filter((t) => t.awardTier === filterTier);
-
-  const handleTrackClick = (track: HackathonTrack) => {
+  const toggleRow = (trackNo: string) => {
     playClickTick();
-    if (selectedTrack?.trackNo === track.trackNo) {
-      // Toggle off or keep selected
-      setSelectedTrack(track);
-    } else {
-      setSelectedTrack(track);
-    }
-  };
-
-  const handleTabChange = (tier: "ALL" | "Winner" | "Runner-Up" | "Special") => {
-    playConfirmChime();
-    setFilterTier(tier);
+    setExpandedTrack((prev) => (prev === trackNo ? null : trackNo));
   };
 
   return (
     <PageWrapper>
+      {/* Unified Tubelight Navbar */}
       <NavBar />
 
-      <ContentContainer>
-        <HeaderArea>
-          <Tagline>CATALOG VN-HON-04 · THE HALL OF RECORDS</Tagline>
-          <MainHeading>Honors & Achievements</MainHeading>
+      <MainContent>
+        {/* Page Header */}
+        <PageHeader>
+          <CatalogTag>CATALOG VN-HON-04 // ASYMMETRIC SPOTLIGHT &amp; LEDGER</CatalogTag>
+          <MainTitle>Honors &amp; Distinctions</MainTitle>
           <Subtitle>
-            Global recognition from Apple, national merit scholarships, and 9 podium finishes across high-stakes hackathons.
+            Global recognition from Apple Inc., nationwide merit scholarships, and 9 podium finishes across competitive 24–48hr national hackathons.
           </Subtitle>
-        </HeaderArea>
+        </PageHeader>
 
-        {/* Top Spotlight Cards */}
-        <SpotlightGrid>
-          {SPOTLIGHT_HONORS.map((honor) => (
-            <SpotlightCard key={honor.id}>
-              <SpotlightTop>
-                <BadgeRow>
-                  <HonorBadge>{honor.badge}</HonorBadge>
-                  <HonorYear>{honor.year}</HonorYear>
-                </BadgeRow>
-                <HonorTitle>{honor.title}</HonorTitle>
-                <HonorIssuer>{honor.issuer}</HonorIssuer>
-                <HonorDescription>{honor.description}</HonorDescription>
-                <ProjectBasisTag>Project: {honor.projectOrBasis}</ProjectBasisTag>
-              </SpotlightTop>
+        {/* 1. Full-Width Architectural Hero Band: Apple Swift Student Challenge 2026 */}
+        <HeroBandWrapper>
+          <HeroBandLeft>
+            <HeroKicker>
+              <span className="apple-dot" />
+              <span>GLOBAL WINNER // APPLE INC. CUPERTINO · 2026</span>
+            </HeroKicker>
 
-              <ImagePlaceholder
-                slotId={honor.imagePlaceholder.slotId}
-                caption={honor.imagePlaceholder.caption}
-                suggestedPath={honor.imagePlaceholder.suggestedImage}
-                aspectRatio="16 / 10"
-                badge="Honor Certificate"
-              />
-            </SpotlightCard>
-          ))}
-        </SpotlightGrid>
+            <HeroTitle>Apple Swift Student Challenge 2026 Winner</HeroTitle>
 
-        {/* iTunes Tracklist Table: 9x Hackathons */}
-        <TableSection>
-          <SectionHeader>
+            <HeroDescription>
+              Selected globally by Apple for engineering <strong>Ping</strong> — an interactive 3D native networking playground built in Swift, SwiftUI, and SceneKit. Designed without external dependencies to simulate real-time packet routing, latency, and OSI network architecture through tactile game physics.
+            </HeroDescription>
+
+            <HeroSpecTags>
+              <SpecPill>
+                <span className="icon"></span>
+                <span>Native Swift &amp; SwiftUI</span>
+              </SpecPill>
+              <SpecPill>
+                <span className="icon">✦</span>
+                <span>3D SceneKit Engine</span>
+              </SpecPill>
+              <SpecPill>
+                <span className="icon">●</span>
+                <span>Zero Third-Party Dependencies</span>
+              </SpecPill>
+              <SpecPill>
+                <span className="icon">◆</span>
+                <span>Cupertino Global Recognition</span>
+              </SpecPill>
+            </HeroSpecTags>
+          </HeroBandLeft>
+
+          <HeroShowcaseBadge>
+            <AppleEmblemIcon></AppleEmblemIcon>
+            <ShowcaseTitle>Swift Student Challenge</ShowcaseTitle>
+            <ShowcaseSub>2026 Global Winner</ShowcaseSub>
+            <ShowcaseVerifiedPill>
+              <CheckCircle2 size={13} />
+              <span>Verified Honoree</span>
+            </ShowcaseVerifiedPill>
+          </HeroShowcaseBadge>
+        </HeroBandWrapper>
+
+        {/* 2. Secondary Band: Reliance Foundation Scholar (Compact Single Row) */}
+        <SecondaryBand>
+          <SecondaryLeft>2023 – 2027</SecondaryLeft>
+          <SecondaryCenter>
+            <span className="title">Reliance Foundation Undergraduate Scholar</span>
+            <span className="desc">
+              Awarded prestigious nationwide merit scholarship (up to ₹2,00,000) honoring top academic excellence, technological leadership, and STEM innovation.
+            </span>
+          </SecondaryCenter>
+          <SecondaryRight>
+            <MeritBadge>
+              <Sparkles size={12} />
+              <span>Top 5% National Merit</span>
+            </MeritBadge>
+          </SecondaryRight>
+        </SecondaryBand>
+
+        {/* 3. The 9× Hackathon Winning Ledger (Full-Width Interactive Table) */}
+        <LedgerSection>
+          <LedgerHeaderArea>
             <div>
-              <SectionHeading>9× Hackathon Winning Ledger</SectionHeading>
-              <p style={{ margin: "4px 0 0", fontSize: "13px", color: "#8892a4" }}>
-                Select any track below to inspect technical details and award verification.
-              </p>
+              <LedgerKicker>COMPETITIVE SPRINT RECORD // 9 PODIUM FINISHES</LedgerKicker>
+              <LedgerTitle>The Winning Ledger</LedgerTitle>
+              <LedgerSubtitle>
+                A complete chronological record of rapid ideation, system architecture, and winning pitches. Click any row to reveal proof &amp; technical specs.
+              </LedgerSubtitle>
             </div>
-            <FilterTabs>
-              <TabButton
-                $active={filterTier === "ALL"}
-                onClick={() => handleTabChange("ALL")}
-              >
-                All (9)
-              </TabButton>
-              <TabButton
-                $active={filterTier === "Winner"}
-                onClick={() => handleTabChange("Winner")}
-              >
-                1st Place
-              </TabButton>
-              <TabButton
-                $active={filterTier === "Runner-Up"}
-                onClick={() => handleTabChange("Runner-Up")}
-              >
-                Runner-Up
-              </TabButton>
-              <TabButton
-                $active={filterTier === "Special"}
-                onClick={() => handleTabChange("Special")}
-              >
-                Special
-              </TabButton>
-            </FilterTabs>
-          </SectionHeader>
+            <LedgerCountBadge>
+              <Trophy size={14} color="#f59e0b" />
+              <span>9 Wins / 14+ Sprints</span>
+            </LedgerCountBadge>
+          </LedgerHeaderArea>
 
           <TableWrapper>
-            <Table>
-              <TableHead>
-                <tr>
-                  <th>#</th>
-                  <th>Event & Organizer</th>
-                  <th>Project</th>
-                  <th>Award / Prize</th>
-                  <th>Date</th>
-                </tr>
-              </TableHead>
-              <tbody>
-                {filteredTracks.map((track) => {
-                  const isSelected = selectedTrack?.trackNo === track.trackNo;
-                  return (
-                    <TableRow
-                      key={track.trackNo}
-                      $selected={isSelected}
-                      onClick={() => handleTrackClick(track)}
-                    >
-                      <TrackNumberCell>{track.trackNo}</TrackNumberCell>
-                      <td>
-                        <EventName>{track.eventName}</EventName>
-                        <span style={{ fontSize: "11.5px", opacity: 0.75 }}>
-                          {track.organizer}
+            {/* Table Header */}
+            <TableHeaderRow>
+              <div>#</div>
+              <div>EVENT</div>
+              <div className="col-project">PROJECT</div>
+              <div>PLACEMENT &amp; PERK</div>
+              <div className="col-year">YEAR</div>
+              <div style={{ textAlign: "right" }}>INFO</div>
+            </TableHeaderRow>
+
+            {/* Table Rows & Expandable Detail Drawers */}
+            {HACKATHON_TRACKS.map((track) => {
+              const isExpanded = expandedTrack === track.trackNo;
+              return (
+                <React.Fragment key={track.trackNo}>
+                  <TableRow
+                    $isExpanded={isExpanded}
+                    onClick={() => toggleRow(track.trackNo)}
+                    title={`Click to view ${track.eventName} details`}
+                  >
+                    <ColIndex>{track.trackNo}</ColIndex>
+
+                    <ColEvent>
+                      <span className="event-name">{track.eventName}</span>
+                      <span className="organizer">{track.organizer}</span>
+                    </ColEvent>
+
+                    <ColProject className="col-project">
+                      <span className="project-tag">{track.project}</span>
+                    </ColProject>
+
+                    <ColPlacement>
+                      <span className="award">{track.award}</span>
+                      {track.prizeOrPerk && (
+                        <span className="prize">{track.prizeOrPerk}</span>
+                      )}
+                    </ColPlacement>
+
+                    <ColYear className="col-year">{track.date}</ColYear>
+
+                    <ColAction>
+                      {isExpanded ? (
+                        <ChevronUp size={16} />
+                      ) : (
+                        <ChevronDown size={16} />
+                      )}
+                    </ColAction>
+                  </TableRow>
+
+                  {/* Inline Detail Drawer */}
+                  <DetailDrawer $isOpen={isExpanded}>
+                    <DrawerLeft>
+                      <DrawerTitle>
+                        <Trophy size={16} color="#f59e0b" />
+                        <span>
+                          {track.eventName} — {track.project}
                         </span>
-                      </td>
-                      <td>
-                        <code style={{ fontSize: "12px" }}>{track.project}</code>
-                      </td>
-                      <td>
-                        <AwardPill $tier={track.awardTier} $selected={isSelected}>
-                          {track.award}
-                        </AwardPill>
+                      </DrawerTitle>
+
+                      <DrawerDesc>
+                        {track.description ||
+                          `Engineered full-stack architecture for ${track.project} under high-pressure competitive hackathon conditions, presenting to industry judges.`}
+                      </DrawerDesc>
+
+                      <DrawerMetaRow>
+                        <MetaChip>Organizer: {track.organizer}</MetaChip>
+                        <MetaChip>Category: {track.awardTier}</MetaChip>
                         {track.prizeOrPerk && (
-                          <div
-                            style={{
-                              fontSize: "11px",
-                              marginTop: "3px",
-                              opacity: 0.8,
-                            }}
-                          >
-                            {track.prizeOrPerk}
-                          </div>
+                          <MetaChip>Reward: {track.prizeOrPerk}</MetaChip>
                         )}
-                      </td>
-                      <td style={{ fontFamily: "ui-monospace, monospace", fontSize: "11.5px" }}>
-                        {track.date}
-                      </td>
-                    </TableRow>
-                  );
-                })}
-              </tbody>
-            </Table>
+                        <MetaChip>Timeline: {track.date}</MetaChip>
+                      </DrawerMetaRow>
+                    </DrawerLeft>
+
+                    <DrawerRight>
+                      <StageProofCard>
+                        <StageProofHeader>
+                          <span>VERIFIED PODIUM RECORD</span>
+                          <span>CATALOG #{track.trackNo}</span>
+                        </StageProofHeader>
+
+                        <StageProofTitle>
+                          {track.award} @ {track.eventName}
+                        </StageProofTitle>
+
+                        <StageVerifiedTag>
+                          <ShieldCheck size={14} />
+                          <span>Official Competition Proof</span>
+                        </StageVerifiedTag>
+                      </StageProofCard>
+                    </DrawerRight>
+                  </DetailDrawer>
+                </React.Fragment>
+              );
+            })}
           </TableWrapper>
+        </LedgerSection>
 
-          {/* Selected Track Detail Drawer */}
-          {selectedTrack && (
-            <DetailDrawer>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  flexWrap: "wrap",
-                  gap: "12px",
-                  marginBottom: "12px",
-                }}
-              >
-                <div>
-                  <h4 style={{ margin: "0 0 4px", fontSize: "17px", color: "#ffffff" }}>
-                    Track {selectedTrack.trackNo}: {selectedTrack.eventName} — {selectedTrack.award}
-                  </h4>
-                  <p style={{ margin: 0, fontSize: "13px", color: "#9aa1b2" }}>
-                    Organized by {selectedTrack.organizer} · Built: <strong>{selectedTrack.project}</strong>
-                  </p>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <AwardPill $tier={selectedTrack.awardTier} $selected={false}>
-                    {selectedTrack.prizeOrPerk || selectedTrack.award}
-                  </AwardPill>
-                </div>
-              </div>
-
-              {selectedTrack.description && (
-                <p style={{ fontSize: "13.5px", color: "#c4c8d4", lineHeight: "1.5", margin: "0 0 16px" }}>
-                  {selectedTrack.description}
-                </p>
-              )}
-
-              {selectedTrack.imagePlaceholder && (
-                <ImagePlaceholder
-                  slotId={selectedTrack.imagePlaceholder.slotId}
-                  caption={selectedTrack.imagePlaceholder.caption}
-                  suggestedPath={selectedTrack.imagePlaceholder.suggestedImage}
-                  aspectRatio="21 / 9"
-                  badge="Award Verification Photo"
-                />
-              )}
-            </DetailDrawer>
-          )}
-        </TableSection>
-
-        {/* 14+ Participations & Finalist Drawer */}
-        <AdditionalSection>
-          <AdditionalTitle>
-            <span>Additional National Finalist & 14+ Hackathon Involvements</span>
-          </AdditionalTitle>
-          <ParticipationsGrid>
+        {/* 4. Notable Participations Honor Roll */}
+        <NotableSection>
+          <NotableHeading>Notable Finalist &amp; Hackathon Participations</NotableHeading>
+          <NotableChipsGrid>
             {NOTABLE_PARTICIPATIONS.map((event, idx) => (
-              <ParticipationItem key={idx}>{event}</ParticipationItem>
+              <NotableChip key={idx}>{event}</NotableChip>
             ))}
-          </ParticipationsGrid>
-        </AdditionalSection>
-      </ContentContainer>
-
-      <ShuffleDock currentPath="/honors" />
+          </NotableChipsGrid>
+        </NotableSection>
+      </MainContent>
     </PageWrapper>
   );
 }
