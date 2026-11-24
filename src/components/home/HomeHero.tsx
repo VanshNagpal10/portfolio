@@ -57,13 +57,13 @@ const MetaHeader = styled.div`
   gap: 12px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #717888;
+  color: #7a7f8a;
   margin-bottom: 24px;
 
   span.accent {
-    color: #388ee9;
+    color: rgba(255, 255, 255, 0.25);
   }
 
   @media (max-width: 640px) {
@@ -118,18 +118,16 @@ const SelectorCard = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 12px 16px;
+  border-radius: 4px;
+  padding: 10px 16px;
   margin-bottom: 36px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(56, 142, 233, 0.4);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(56, 142, 233, 0.15);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(56, 142, 233, 0.35);
   }
 
   @media (max-width: 640px) {
@@ -144,16 +142,15 @@ const SelectorLeft = styled.div`
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #64748b;
+  color: #7a7f8a;
 
   span.dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background-color: #388ee9;
-    box-shadow: 0 0 8px #388ee9;
   }
 `;
 
@@ -192,14 +189,16 @@ const Keycap = styled.kbd`
 
 const StatGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 440px;
+  gap: 24px;
   margin-bottom: 32px;
   padding-bottom: 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
   @media (max-width: 640px) {
-    gap: 12px;
+    gap: 16px;
+    max-width: 100%;
   }
 `;
 
@@ -214,7 +213,7 @@ const StatItem = styled.div<{ $hasBorder?: boolean }>`
     &::after {
       content: "";
       position: absolute;
-      right: 0;
+      right: -12px;
       top: 15%;
       height: 70%;
       width: 1px;
@@ -518,19 +517,15 @@ export default function HomeHero({ onOpenCommandMenu }: HomeHeroProps = {}) {
         <Keycap title="Press Enter to launch">↵</Keycap>
       </SelectorCard>
 
-      {/* Stat Grid */}
+      {/* Stat Grid — 2 Focused Acumen Podiums (Monochrome Hardware Ledger) */}
       <StatGrid>
         <StatItem $hasBorder>
           <StatVal>SSC &apos;26</StatVal>
           <StatSub>APPLE GLOBAL WINNER</StatSub>
         </StatItem>
-        <StatItem $hasBorder>
+        <StatItem>
           <StatVal>9×</StatVal>
           <StatSub>HACKATHON PODIUMS</StatSub>
-        </StatItem>
-        <StatItem>
-          <StatVal>6+</StatVal>
-          <StatSub>SHIPPED PRODUCTS</StatSub>
         </StatItem>
       </StatGrid>
 

@@ -199,10 +199,10 @@ const CatalogTag = styled.div`
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #60a5fa;
-  margin-bottom: 12px;
+  color: #7a7f8a;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -210,20 +210,20 @@ const CatalogTag = styled.div`
   &::before {
     content: "";
     display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: #388ee9;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.4);
     border-radius: 50%;
-    box-shadow: 0 0 8px #388ee9;
   }
 `;
 
 const MainTitle = styled.h1`
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  font-size: clamp(32px, 4vw, 46px);
+  font-size: clamp(40px, 5.8vw, 68px);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  margin: 0 0 12px;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin: 0 0 16px;
   color: #ffffff;
 `;
 
@@ -392,12 +392,11 @@ const IpodChevron = styled.span<{ $isActive: boolean }>`
   }
 `;
 
-/* Rail Summary Card */
+/* Rail Summary Card (Unboxed Hardware Metadata) */
 const RailSummaryCard = styled.div`
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
+  padding: 16px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -496,7 +495,7 @@ const EntryCategory = styled.div`
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #388ee9;
+  color: #7a7f8a;
   margin-bottom: 8px;
 `;
 
@@ -532,18 +531,20 @@ const MetricCallout = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 12px;
-  background: rgba(56, 142, 233, 0.09);
-  border: 1px solid rgba(56, 142, 233, 0.25);
-  border-radius: 20px;
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
-  color: #60a5fa;
+  color: #e2e4e9;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   margin-bottom: 24px;
 
   span.bolt {
-    color: #388ee9;
+    color: #7a7f8a;
   }
 `;
 

@@ -60,10 +60,10 @@ const CatalogTag = styled.div`
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #f59e0b;
-  margin-bottom: 12px;
+  color: #7a7f8a;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -71,20 +71,20 @@ const CatalogTag = styled.div`
   &::before {
     content: "";
     display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: #f59e0b;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.4);
     border-radius: 50%;
-    box-shadow: 0 0 8px #f59e0b;
   }
 `;
 
 const MainTitle = styled.h1`
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  font-size: clamp(32px, 4vw, 46px);
+  font-size: clamp(40px, 5.8vw, 68px);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  margin: 0 0 12px;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin: 0 0 16px;
   color: #ffffff;
 `;
 
@@ -194,44 +194,34 @@ const SpecPill = styled.span`
   }
 `;
 
-/* Apple Showcase Badge (Right Column) */
+/* Apple Showcase Architecture (Right Column) */
 const HeroShowcaseBadge = styled.div`
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: 32px 28px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  overflow: hidden;
+  align-items: flex-start;
+  padding-left: 48px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 140px;
-    height: 140px;
-    background: radial-gradient(circle, rgba(56, 142, 233, 0.25) 0%, transparent 70%);
-    pointer-events: none;
+  @media (max-width: 1024px) {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 28px;
   }
 `;
 
 const AppleEmblemIcon = styled.div`
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  background: linear-gradient(145deg, #242630 0%, #15161d 100%);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 24px;
   margin-bottom: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 `;
 
 const ShowcaseTitle = styled.div`
@@ -247,23 +237,23 @@ const ShowcaseSub = styled.div`
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
   letter-spacing: 0.1em;
-  color: #388ee9;
+  color: #7a7f8a;
   text-transform: uppercase;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 `;
 
 const ShowcaseVerifiedPill = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  border-radius: 20px;
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
-  color: #4ade80;
-  letter-spacing: 0.04em;
+  color: #e2e4e9;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   font-family: ui-monospace, monospace;
 `;
@@ -292,7 +282,7 @@ const SecondaryLeft = styled.div`
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #64748b;
+  color: #7a7f8a;
   text-transform: uppercase;
 `;
 
@@ -324,15 +314,15 @@ const MeritBadge = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 13px;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.32);
-  border-radius: 20px;
+  padding: 5px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: #4ade80;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #e2e4e9;
   text-transform: uppercase;
   white-space: nowrap;
 `;
@@ -362,7 +352,7 @@ const LedgerKicker = styled.div`
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #388ee9;
+  color: #7a7f8a;
   margin-bottom: 6px;
 `;
 
@@ -378,21 +368,21 @@ const LedgerTitle = styled.h2`
 const LedgerSubtitle = styled.p`
   margin: 6px 0 0;
   font-size: 14px;
-  color: #94a3b8;
+  color: #8f96a3;
 `;
 
 const LedgerCountBadge = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.04);
+  padding: 5px 12px;
+  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+  border-radius: 4px;
   font-family: ui-monospace, monospace;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
-  color: #cbd5e1;
+  color: #7a7f8a;
 `;
 
 /* Table Framework */

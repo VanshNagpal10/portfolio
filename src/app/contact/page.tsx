@@ -3,14 +3,22 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { NavBar } from "@/components/ui/tubelight-navbar";
-import ShuffleDock from "@/components/os/ShuffleDock";
 import { CONTACT_LINKS, RESUME_INFO, CHASSIS_ENGRAVINGS } from "@/data/contact";
 import { playClickTick, playConfirmChime } from "@/utils/audio";
+import { Copy, Check, ArrowUpRight, Download, Mail, Phone } from "lucide-react";
+
+/* ------------------------------------------------------------------ */
+/*  Hardware Backplate & Telemetry Manifest                           */
+/* ------------------------------------------------------------------ */
 
 const PageWrapper = styled.div`
   min-height: 100vh;
-  background: radial-gradient(circle at 50% 0%, #17181f 0%, #08090c 100%);
-  color: #f3f4f6;
+  background-color: #08090c;
+  background-image: 
+    radial-gradient(circle at 50% 10%, rgba(56, 142, 233, 0.08) 0%, transparent 60%),
+    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px;
+  color: #f5f5f7;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
   padding-bottom: 120px;
   position: relative;
@@ -18,135 +26,141 @@ const PageWrapper = styled.div`
 `;
 
 const ContentContainer = styled.main`
-  max-width: 960px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 84px 24px 40px;
-
-  @media (max-width: 768px) {
-    padding: 72px 16px 24px;
-  }
-`;
-
-/**
- * Stainless Steel Backplate Container.
- * Pointer-reactive specular highlight reflects light based on cursor position ($x, $y).
- */
-const Backplate = styled.div<{ $x: number; $y: number }>`
-  position: relative;
-  background: radial-gradient(
-      circle 450px at ${(props) => props.$x}% ${(props) => props.$y}%,
-      rgba(255, 255, 255, 0.16) 0%,
-      rgba(255, 255, 255, 0.04) 40%,
-      transparent 80%
-    ),
-    linear-gradient(135deg, #1b1c22 0%, #101115 50%, #16171d 100%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 28px;
-  padding: 48px 40px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.35),
-    inset 0 0 40px rgba(0, 0, 0, 0.5);
+  padding: 96px 36px 64px;
   box-sizing: border-box;
-  transition: border-color 0.25s ease;
 
-  &:hover {
-    border-color: rgba(255, 255, 255, 0.28);
-  }
-
-  @media (max-width: 640px) {
-    padding: 28px 20px;
-    border-radius: 20px;
+  @media (max-width: 1024px) {
+    padding: 80px 20px 48px;
   }
 `;
 
-const EngravedAppleMonogram = styled.div`
-  text-align: center;
-  margin-bottom: 24px;
+/* ------------------------------------------------------------------ */
+/*  Page Header — Extreme Typographic Scale Contrast                    */
+/* ------------------------------------------------------------------ */
+
+const HeaderArea = styled.header`
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 40px;
+  margin-bottom: 56px;
 `;
 
-const MonogramBadge = styled.div`
-  display: inline-flex;
+const MonospaceKicker = styled.div`
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7a7f8a;
+  margin-bottom: 16px;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 4px 12px rgba(0, 0, 0, 0.4);
+  gap: 10px;
+
+  span.serial {
+    color: rgba(255, 255, 255, 0.35);
+  }
+`;
+
+const MainHeading = styled.h1`
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  color: #ffffff;
-`;
-
-const EngravedHeader = styled.div`
-  text-align: center;
-  margin-bottom: 36px;
-`;
-
-const HeroName = styled.h1`
-  font-size: clamp(26px, 4.5vw, 38px);
+  font-size: clamp(40px, 5.8vw, 68px);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0 0 10px;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin: 0 0 16px;
   color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 `;
 
-const LaserTagline = styled.p`
-  margin: 0 auto;
-  font-size: 14.5px;
-  color: #a1a7b8;
-  max-width: 560px;
-  line-height: 1.5;
+const Subtitle = styled.p`
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #8f96a3;
+  max-width: 740px;
+  font-weight: 400;
 `;
 
-const PrimaryCtaBox = styled.div`
+/* ------------------------------------------------------------------ */
+/*  Section 01: Primary Communication Band (One Focal Action)          */
+/* ------------------------------------------------------------------ */
+
+const PrimaryChannelBand = styled.section`
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 56px;
+  margin-bottom: 56px;
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 48px;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+`;
+
+const PrimaryChannelLeft = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
-  padding: 28px;
-  margin-bottom: 32px;
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
 `;
 
-const EmailDisplay = styled.div`
+const ChannelLabel = styled.span`
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: clamp(16px, 3vw, 22px);
+  font-size: 11px;
   font-weight: 600;
-  color: #ffffff;
-  letter-spacing: 0.02em;
-  margin-bottom: 14px;
-  text-align: center;
-  word-break: break-all;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7a7f8a;
+  margin-bottom: 10px;
 `;
 
-const CopyButton = styled.button<{ $copied: boolean }>`
+const EmailDisplay = styled.a`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(24px, 3.2vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  word-break: break-all;
+  margin-bottom: 16px;
+  display: inline-block;
+
+  &:hover {
+    color: #388ee9;
+  }
+`;
+
+const ActionRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+`;
+
+/** The ONE primary signature blue action CTA button */
+const PrimaryBlueButton = styled.button<{ $copied?: boolean }>`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 22px;
-  background: ${(props) =>
-    props.$copied
-      ? "linear-gradient(180deg, #22c55e 0%, #16a34a 100%)"
-      : "linear-gradient(180deg, #388ee9 0%, #1754be 100%)"};
+  padding: 10px 20px;
+  background: ${(props) => (props.$copied ? "#10b981" : "#388ee9")};
   color: #ffffff;
-  border: 1px solid ${(props) => (props.$copied ? "#4ade80" : "rgba(255, 255, 255, 0.2)")};
-  border-radius: 24px;
-  font-size: 13.5px;
-  font-weight: 600;
+  border: 1px solid ${(props) => (props.$copied ? "#34d399" : "#60a5fa")};
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.15s ease;
 
   &:hover {
+    background: ${(props) => (props.$copied ? "#059669" : "#2563eb")};
     transform: translateY(-1px);
-    filter: brightness(1.1);
   }
 
   &:active {
@@ -154,122 +168,225 @@ const CopyButton = styled.button<{ $copied: boolean }>`
   }
 `;
 
-const TilesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-  margin-bottom: 36px;
-`;
-
-const TileLink = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  padding: 16px 20px;
-  text-decoration: none;
-  color: #e2e4e9;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.065);
-    border-color: rgba(56, 142, 233, 0.4);
-    transform: translateY(-2px);
-    color: #ffffff;
-  }
-`;
-
-const TileContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-`;
-
-const TileLabel = styled.span`
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #8892a4;
-`;
-
-const TileValue = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-`;
-
-const TileArrow = styled.span`
-  font-size: 16px;
-  color: #388ee9;
-`;
-
-const ResumeBanner = styled.div`
-  background: linear-gradient(135deg, rgba(56, 142, 233, 0.12) 0%, rgba(23, 84, 190, 0.05) 100%);
-  border: 1px solid rgba(56, 142, 233, 0.28);
-  border-radius: 16px;
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 40px;
-`;
-
-const ResumeButton = styled.a`
+const SecondaryGhostButton = styled.a`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background: linear-gradient(180deg, #388ee9 0%, #1754be 100%);
-  color: #ffffff;
-  border-radius: 10px;
-  font-size: 13.5px;
+  gap: 6px;
+  padding: 10px 18px;
+  background: transparent;
+  color: #9aa1b0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
   font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(23, 84, 190, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.15s ease;
 
   &:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.03);
   }
 `;
 
-const EngravedFooter = styled.footer`
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 24px;
+const PrimaryChannelRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 32px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+
+  @media (max-width: 900px) {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 24px;
+  }
+`;
+
+const TelemetryItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const TelemetryLabel = styled.span`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7a7f8a;
+`;
+
+const TelemetryValue = styled.span`
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #e2e4e9;
+`;
+
+/* ------------------------------------------------------------------ */
+/*  Section 02: Communications & Social Ledger (iTunes Index Style)    */
+/* ------------------------------------------------------------------ */
+
+const LedgerBand = styled.section`
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 56px;
+  margin-bottom: 56px;
+`;
+
+const SectionHeaderRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+`;
+
+const SectionIndex = styled.span`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7a7f8a;
+`;
+
+const SectionMeta = styled.span`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+`;
+
+const LedgerTable = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LedgerRow = styled.a`
+  display: grid;
+  grid-template-columns: 80px 220px 1fr 180px 32px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+
+    span.action-text {
+      color: #388ee9;
+    }
+
+    svg.action-arrow {
+      color: #388ee9;
+      transform: translate(2px, -2px);
+    }
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 48px 1fr 32px;
+    gap: 8px;
+    padding: 16px 0;
+  }
+`;
+
+const RowIndex = styled.span`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #7a7f8a;
+`;
+
+const RowChannel = styled.span`
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+`;
+
+const RowValue = styled.span`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px;
+  color: #9aa1b0;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+`;
+
+const RowAction = styled.span`
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a7f8a;
+  text-align: right;
+  transition: color 0.15s ease;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+`;
+
+const RowIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #7a7f8a;
+
+  svg {
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+`;
+
+/* ------------------------------------------------------------------ */
+/*  Section 03: Laser-Etched Hardware Engravings                       */
+/* ------------------------------------------------------------------ */
+
+const EngravingsSection = styled.footer`
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 11px;
-  letter-spacing: 0.04em;
-  color: #6d7588;
-  line-height: 1.6;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #555b6a;
+  line-height: 1.8;
 
   p {
-    margin: 4px 0;
+    margin: 2px 0;
+  }
+
+  span.serial-highlight {
+    color: #7a7f8a;
+    font-weight: 600;
   }
 `;
 
+/* ------------------------------------------------------------------ */
+/*  Main Component                                                    */
+/* ------------------------------------------------------------------ */
+
 export default function ContactPage() {
   const [copied, setCopied] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 30 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setMousePos({ x, y });
-  };
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("vanshnagpal21@gmail.com");
     playConfirmChime();
     setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
+    setTimeout(() => setCopied(false), 2400);
   };
 
   return (
@@ -277,105 +394,183 @@ export default function ContactPage() {
       <NavBar />
 
       <ContentContainer>
-        <Backplate
-          $x={mousePos.x}
-          $y={mousePos.y}
-          onMouseMove={handleMouseMove}
-          aria-label="Stainless Steel iPod Backplate"
-        >
-          <EngravedAppleMonogram>
-            <MonogramBadge>VN</MonogramBadge>
-          </EngravedAppleMonogram>
+        {/* Header */}
+        <HeaderArea>
+          <MonospaceKicker>
+            <span>05 // HARDWARE BACKPLATE</span>
+            <span className="serial">· CHASSIS TELEMETRY</span>
+            <span className="serial">· DELHI, IN</span>
+          </MonospaceKicker>
+          <MainHeading>Initiate Connection.</MainHeading>
+          <Subtitle>
+            Direct communication channels for engineering opportunities, iOS collaborations, and full-stack software development.
+          </Subtitle>
+        </HeaderArea>
 
-          <EngravedHeader>
-            <HeroName>Let&apos;s Build Something Iconic.</HeroName>
-            <LaserTagline>
-              Available for full-time Software Engineering, iOS Developer roles, and high-impact engineering internships.
-            </LaserTagline>
-          </EngravedHeader>
+        {/* Section 01: Primary Communication Band */}
+        <PrimaryChannelBand>
+          <PrimaryChannelLeft>
+            <ChannelLabel>DIRECT PRIMARY COMMUNICATOR</ChannelLabel>
+            <EmailDisplay
+              href="mailto:vanshnagpal21@gmail.com"
+              onClick={() => playClickTick()}
+              title="Click to compose email"
+            >
+              vanshnagpal21@gmail.com
+            </EmailDisplay>
 
-          {/* 1-Click Copy Email Primary Box */}
-          <PrimaryCtaBox>
-            <span style={{ fontSize: "11px", letterSpacing: "0.08em", color: "#8892a4", textTransform: "uppercase", marginBottom: "8px" }}>
-              DIRECT INBOX
-            </span>
-            <EmailDisplay>vanshnagpal21@gmail.com</EmailDisplay>
-            <CopyButton $copied={copied} onClick={handleCopyEmail}>
-              {copied ? (
-                <>
-                  <span>✓</span>
-                  <span>Copied to Clipboard!</span>
-                </>
-              ) : (
-                <>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                  </svg>
-                  <span>1-Click Copy Email</span>
-                </>
-              )}
-            </CopyButton>
-          </PrimaryCtaBox>
+            <ActionRow>
+              <PrimaryBlueButton
+                $copied={copied}
+                onClick={handleCopyEmail}
+                title="Copy email to clipboard"
+              >
+                {copied ? <Check size={14} /> : <Copy size={14} />}
+                <span>{copied ? "Copied to Clipboard" : "Copy Email"}</span>
+              </PrimaryBlueButton>
 
-          {/* Contact Direct Tiles */}
-          <TilesGrid>
-            {CONTACT_LINKS.map((link) => (
-              <TileLink
-                key={link.id}
-                href={link.url}
-                target={link.url.startsWith("http") ? "_blank" : undefined}
-                rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
+              <SecondaryGhostButton
+                href="mailto:vanshnagpal21@gmail.com"
                 onClick={() => playClickTick()}
               >
-                <TileContent>
-                  <TileLabel>{link.name}</TileLabel>
-                  <TileValue>{link.label}</TileValue>
-                </TileContent>
-                <TileArrow>↗</TileArrow>
-              </TileLink>
-            ))}
-          </TilesGrid>
+                <Mail size={13} />
+                <span>Open Mail Client ↗</span>
+              </SecondaryGhostButton>
 
-          {/* Resume PDF Download Banner */}
-          <ResumeBanner>
-            <div>
-              <div style={{ fontSize: "12px", color: "#388ee9", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "4px" }}>
-                OFFICIAL RESUME
-              </div>
-              <h3 style={{ margin: "0 0 4px", fontSize: "18px", color: "#ffffff", fontWeight: 700 }}>
-                {RESUME_INFO.filename}
-              </h3>
-              <p style={{ margin: 0, fontSize: "13px", color: "#9aa1b2" }}>
-                {RESUME_INFO.headline} · {RESUME_INFO.filesize} · Updated {RESUME_INFO.lastUpdated}
-              </p>
-            </div>
-            <ResumeButton
-              href={RESUME_INFO.downloadUrl}
+              <SecondaryGhostButton
+                href={RESUME_INFO.downloadUrl}
+                download={RESUME_INFO.filename}
+                onClick={() => playClickTick()}
+              >
+                <Download size={13} />
+                <span>Resume PDF (128 KB)</span>
+              </SecondaryGhostButton>
+            </ActionRow>
+          </PrimaryChannelLeft>
+
+          <PrimaryChannelRight>
+            <TelemetryItem>
+              <TelemetryLabel>LOCATION &amp; TIMEZONE</TelemetryLabel>
+              <TelemetryValue>Delhi, India (IST / UTC+5:30)</TelemetryValue>
+            </TelemetryItem>
+
+            <TelemetryItem>
+              <TelemetryLabel>DIRECT PHONE / WHATSAPP</TelemetryLabel>
+              <TelemetryValue>
+                <a
+                  href="tel:+919540599296"
+                  style={{ color: "#ffffff", textDecoration: "none" }}
+                  onClick={() => playClickTick()}
+                >
+                  +91 9540599296
+                </a>
+              </TelemetryValue>
+            </TelemetryItem>
+
+            <TelemetryItem>
+              <TelemetryLabel>CURRENT STATUS</TelemetryLabel>
+              <TelemetryValue style={{ color: "#34d399", display: "flex", alignItems: "center", gap: "6px" }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#34d399", display: "inline-block" }} />
+                Open to Full-Time &amp; High-Impact Roles
+              </TelemetryValue>
+            </TelemetryItem>
+          </PrimaryChannelRight>
+        </PrimaryChannelBand>
+
+        {/* Section 02: Communications & Social Ledger */}
+        <LedgerBand>
+          <SectionHeaderRow>
+            <SectionIndex>COMMUNICATIONS LEDGER &amp; VERIFIED HANDLES</SectionIndex>
+            <SectionMeta>5 ACTIVE ENDPOINTS</SectionMeta>
+          </SectionHeaderRow>
+
+          <LedgerTable>
+            <LedgerRow
+              href="https://github.com/VanshNagpal10"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => playConfirmChime()}
+              onClick={() => playClickTick()}
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              <span>Download PDF</span>
-            </ResumeButton>
-          </ResumeBanner>
+              <RowIndex>01 //</RowIndex>
+              <RowChannel>GitHub</RowChannel>
+              <RowValue>github.com/VanshNagpal10</RowValue>
+              <RowAction className="action-text">Inspect Repositories</RowAction>
+              <RowIcon>
+                <ArrowUpRight size={16} className="action-arrow" />
+              </RowIcon>
+            </LedgerRow>
 
-          {/* Micro-Engraved Chassis Footer */}
-          <EngravedFooter>
-            <p>{CHASSIS_ENGRAVINGS.line1}</p>
-            <p>{CHASSIS_ENGRAVINGS.line2}</p>
-            <p>{CHASSIS_ENGRAVINGS.line3}</p>
-            <p style={{ opacity: 0.65, marginTop: "8px" }}>{CHASSIS_ENGRAVINGS.serial}</p>
-          </EngravedFooter>
-        </Backplate>
+            <LedgerRow
+              href="https://www.linkedin.com/in/vanshnagpal27/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => playClickTick()}
+            >
+              <RowIndex>02 //</RowIndex>
+              <RowChannel>LinkedIn</RowChannel>
+              <RowValue>linkedin.com/in/vanshnagpal27</RowValue>
+              <RowAction className="action-text">Connect Network</RowAction>
+              <RowIcon>
+                <ArrowUpRight size={16} className="action-arrow" />
+              </RowIcon>
+            </LedgerRow>
+
+            <LedgerRow
+              href="https://x.com/VanshNagpal_27"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => playClickTick()}
+            >
+              <RowIndex>03 //</RowIndex>
+              <RowChannel>X (Twitter)</RowChannel>
+              <RowValue>x.com/VanshNagpal_27</RowValue>
+              <RowAction className="action-text">Follow Updates</RowAction>
+              <RowIcon>
+                <ArrowUpRight size={16} className="action-arrow" />
+              </RowIcon>
+            </LedgerRow>
+
+            <LedgerRow
+              href="https://leetcode.com/u/Vansh_Nagpal"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => playClickTick()}
+            >
+              <RowIndex>04 //</RowIndex>
+              <RowChannel>LeetCode</RowChannel>
+              <RowValue>leetcode.com/u/Vansh_Nagpal</RowValue>
+              <RowAction className="action-text">View Algorithms</RowAction>
+              <RowIcon>
+                <ArrowUpRight size={16} className="action-arrow" />
+              </RowIcon>
+            </LedgerRow>
+
+            <LedgerRow
+              href={RESUME_INFO.downloadUrl}
+              download={RESUME_INFO.filename}
+              onClick={() => playClickTick()}
+            >
+              <RowIndex>05 //</RowIndex>
+              <RowChannel>Curriculum Vitae</RowChannel>
+              <RowValue>{RESUME_INFO.filename} · {RESUME_INFO.filesize}</RowValue>
+              <RowAction className="action-text">Download Document</RowAction>
+              <RowIcon>
+                <ArrowUpRight size={16} className="action-arrow" />
+              </RowIcon>
+            </LedgerRow>
+          </LedgerTable>
+        </LedgerBand>
+
+        {/* Section 03: Laser-Etched Hardware Engravings */}
+        <EngravingsSection>
+          <p>{CHASSIS_ENGRAVINGS.line1}</p>
+          <p>{CHASSIS_ENGRAVINGS.line2}</p>
+          <p>{CHASSIS_ENGRAVINGS.line3}</p>
+          <p>
+            <span className="serial-highlight">{CHASSIS_ENGRAVINGS.serial}</span>
+          </p>
+        </EngravingsSection>
       </ContentContainer>
-
-      <ShuffleDock currentPath="/contact" />
     </PageWrapper>
   );
 }
