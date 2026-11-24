@@ -44,16 +44,16 @@ const Silver: DeviceTheme = {
 
 const Black: DeviceTheme = {
   body: {
-    background: "linear-gradient(180deg, #2c2d33 0%, #17181c 45%, #0f1013 100%)",
+    background: "linear-gradient(180deg, #7d7c7d 0%, #1e1e1e 100%)",
   },
   clickwheel: {
-    background: "#1c1d21",
-    outline: "#111215",
+    background: "#2a2a2a",
+    outline: "#1a1a1a",
     button: "#FFFFFF",
     centerButton: {
-      background: "#24252a",
-      boxShadow: "rgb(15, 15, 18)",
-      outline: "#141518",
+      background: "#7d7c7d",
+      boxShadow: "rgb(50, 50, 50)",
+      outline: "#1a1a1a",
     },
   },
 };

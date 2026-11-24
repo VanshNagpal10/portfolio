@@ -10,15 +10,11 @@ import {
   Sticker,
   Sticker2,
   Sticker3,
-  HeadphoneJackPort,
 } from "@/components/Ipod/Styled";
 import ViewContextProvider from "@/providers/ViewContextProvider";
 import { GlobalStyles } from "@/components/Ipod/GlobalStyles";
-import { useAudio } from "@/context/AudioContext";
 
 const Ipod = () => {
-  const { isPlugged } = useAudio();
-
   return (
     <SettingsProvider>
       <GlobalStyles />
@@ -26,7 +22,6 @@ const Ipod = () => {
         <SettingsContext.Consumer>
           {([{ deviceTheme }]) => (
             <Shell $deviceTheme={deviceTheme}>
-              <HeadphoneJackPort id="ipod-headphone-jack" $isPlugged={isPlugged} />
               <Sticker $deviceTheme={deviceTheme} />
               <Sticker2 $deviceTheme={deviceTheme} />
               <Sticker3 $deviceTheme={deviceTheme} />

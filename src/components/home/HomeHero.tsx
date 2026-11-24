@@ -348,7 +348,7 @@ const TRACK_LIST = [
 ];
 
 export default function HomeHero() {
-  const { isPlugged, isPlaying, currentTrack } = useAudio();
+  const { isPlugged, isPlaying, currentTrack, togglePlay } = useAudio();
   const [copied, setCopied] = useState(false);
   const [trackIndex, setTrackIndex] = useState(0);
 
@@ -416,25 +416,30 @@ export default function HomeHero() {
           <StatSub>HACKATHON PODIUMS</StatSub>
         </StatItem>
         <StatItem>
-          <StatVal>9.04</StatVal>
-          <StatSub>B.TECH CSE CGPA</StatSub>
+          <StatVal>6+</StatVal>
+          <StatSub>SHIPPED PRODUCTS</StatSub>
         </StatItem>
       </StatGrid>
 
       {/* Audio Deck Status */}
-      <AudioDeckBar $isPlugged={isPlugged}>
-        <EqBars className={isPlugged && isPlaying ? "playing" : ""}>
+      <AudioDeckBar
+        $isPlugged={isPlaying}
+        onClick={() => togglePlay()}
+        style={{ cursor: "pointer" }}
+        title="Click to toggle Lo-Fi Soundtrack"
+      >
+        <EqBars className={isPlaying ? "playing" : ""}>
           <span />
           <span />
           <span />
           <span />
         </EqBars>
-        {isPlugged ? (
+        {isPlaying ? (
           <span>
-            AUDIO DECK: NOW PLAYING {currentTrack?.name || "LO-FI DRIFT"} (CLICK WHEEL TO PAUSE)
+            AUDIO DECK: NOW PLAYING {currentTrack?.name || "LO-FI DRIFT"} · CLICK WHEEL ▶‖ TO PAUSE
           </span>
         ) : (
-          <span>AUDIO DECK: PLUG IN 3.5MM JACK FOR LO-FI</span>
+          <span>AUDIO DECK: LO-FI SOUNDTRACK · CLICK WHEEL ▶‖ TO PLAY</span>
         )}
       </AudioDeckBar>
 
