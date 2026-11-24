@@ -347,7 +347,89 @@ const TRACK_LIST = [
   { id: "contact", label: "05 / CONTACT — BACKPLATE & CONNECT", href: "/contact" },
 ];
 
-export default function HomeHero() {
+interface HomeHeroProps {
+  onOpenCommandMenu?: () => void;
+}
+
+const ChalkUnderlineSvg = styled.svg`
+  width: 100%;
+  max-width: 340px;
+  height: 10px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  display: block;
+`;
+
+const TechStackRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+`;
+
+const TechTag = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+  transition: all 0.15s ease;
+  user-select: none;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(56, 142, 233, 0.45);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  span.icon {
+    font-size: 10px;
+    color: #388ee9;
+  }
+`;
+
+const CommandTriggerPill = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(56, 142, 233, 0.1);
+  border: 1px solid rgba(56, 142, 233, 0.35);
+  border-radius: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #93c5fd;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(56, 142, 233, 0.2);
+    border-color: rgba(56, 142, 233, 0.65);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  kbd {
+    padding: 1px 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    color: #ffffff;
+  }
+`;
+
+export default function HomeHero({ onOpenCommandMenu }: HomeHeroProps = {}) {
   const { isPlugged, isPlaying, currentTrack, togglePlay } = useAudio();
   const [copied, setCopied] = useState(false);
   const [trackIndex, setTrackIndex] = useState(0);
@@ -382,12 +464,43 @@ export default function HomeHero() {
       <MainTitle>
         <span className="name">Vansh Nagpal.</span>
         <span className="tagline">Engineering tactile software &amp; crisp interfaces.</span>
+        {/* Hand-drawn chalk squiggle underline */}
+        <ChalkUnderlineSvg viewBox="0 0 340 10" fill="none">
+          <path
+            d="M 4 5 Q 85 9 170 4 T 336 6"
+            stroke="rgba(255, 255, 255, 0.45)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        </ChalkUnderlineSvg>
       </MainTitle>
 
       {/* Narrative Bio */}
       <NarrativeText>
         CS undergrad at VIPS-TC crafting native iOS worlds, full-stack products, and Apple-inspired interfaces. Apple Swift Student Challenge 2026 Winner, 9× Hackathon Winner, and previously engineering at KhwaaishAI &amp; DDITLAB.
       </NarrativeText>
+
+      {/* 21st.dev Style Interactive Tech Stack Tags */}
+      <TechStackRow>
+        <TechTag><span className="icon"></span> Swift &amp; SwiftUI</TechTag>
+        <TechTag><span className="icon">▲</span> Next.js 16</TechTag>
+        <TechTag><span className="icon">✦</span> TypeScript</TechTag>
+        <TechTag><span className="icon">●</span> iOS Native</TechTag>
+        <TechTag><span className="icon">◆</span> Tailwind &amp; Motion</TechTag>
+        <TechTag><span className="icon">⬡</span> Node.js</TechTag>
+        {onOpenCommandMenu && (
+          <CommandTriggerPill
+            onClick={() => {
+              playClickTick();
+              onOpenCommandMenu();
+            }}
+            title="Open Command Palette (⌘K)"
+          >
+            <span>⌘ Quick Actions</span>
+            <kbd>⌘K</kbd>
+          </CommandTriggerPill>
+        )}
+      </TechStackRow>
 
       {/* Interactive Guide / Selector Bar */}
       <SelectorCard>
