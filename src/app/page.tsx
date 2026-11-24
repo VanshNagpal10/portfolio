@@ -7,8 +7,17 @@ import OSStatusBar from "@/components/os/OSStatusBar";
 import HomeHero from "@/components/home/HomeHero";
 import InteractiveArrow from "@/components/home/InteractiveArrow";
 import TactileControlHUD from "@/components/home/TactileControlHUD";
-import FloatingDock from "@/components/ui/FloatingDock";
+import { NavBar } from "@/components/ui/tubelight-navbar";
 import CommandMenu from "@/components/ui/CommandMenu";
+import {
+  Home as HomeIcon,
+  Disc,
+  Briefcase,
+  Award,
+  User,
+  Mail,
+  FileText,
+} from "lucide-react";
 
 const Ipod = dynamic(() => import("@/components/Ipod/Ipod"), { ssr: false });
 
@@ -19,7 +28,7 @@ const PageWrapper = styled.div`
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
-  padding-bottom: 70px;
+  padding-bottom: 84px;
 `;
 
 const MainStage = styled.main`
@@ -37,7 +46,7 @@ const MainStage = styled.main`
   box-sizing: border-box;
 
   @media (max-width: 1024px) {
-    padding: 24px 20px 80px;
+    padding: 24px 20px 96px;
     align-items: flex-start;
   }
 `;
@@ -81,6 +90,16 @@ const IpodColumn = styled.div<{ $highlight?: boolean }>`
     transform: scale(0.98);
   `}
 `;
+
+const NAV_ITEMS = [
+  { name: "Home", url: "/", icon: HomeIcon },
+  { name: "Projects", url: "/projects", icon: Disc },
+  { name: "Experience", url: "/experience", icon: Briefcase },
+  { name: "Honors", url: "/honors", icon: Award },
+  { name: "About", url: "/about", icon: User },
+  { name: "Contact", url: "/contact", icon: Mail },
+  { name: "Resume", url: "/Vansh-SDE.pdf", icon: FileText },
+];
 
 export default function Home() {
   const [highlightIpod, setHighlightIpod] = useState(false);
@@ -130,8 +149,8 @@ export default function Home() {
         </StageContainer>
       </MainStage>
 
-      {/* Modern 21st.dev Floating Bottom Dock */}
-      <FloatingDock onOpenCommandMenu={() => setCommandMenuOpen(true)} />
+      {/* Tubelight Lamp Navbar from 21st.dev / shadcn */}
+      <NavBar items={NAV_ITEMS} />
 
       {/* shadcn / cmdk Style Quick Jump Command Menu */}
       <CommandMenu
