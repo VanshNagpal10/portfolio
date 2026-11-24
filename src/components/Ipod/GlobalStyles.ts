@@ -3,18 +3,14 @@ import { Screen } from "@/utils/constants";
 
 export const GlobalStyles = createGlobalStyle`
   body {
-    height: 100dvh;
-    display: grid;
+    min-height: 100vh;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    color: black;
-    min-height: 550px;
-    overflow: auto;
-
-    ${Screen.XS.MediaQuery} {
-      min-height: 480px;
-    }
+    color: #e2e4e9;
+    background: #090a0d;
+    overflow-x: hidden;
   }
 
   a {

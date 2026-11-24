@@ -22,21 +22,27 @@ const _HomeView = () => {
       },
       {
         type: "action",
-        label: "Honors & Wins",
+        label: "Honors",
         preview: SplitScreenPreview.Honors,
         onSelect: () => window.location.assign("/honors"),
       },
       {
         type: "action",
-        label: "About & Leadership",
+        label: "About",
         preview: SplitScreenPreview.About,
         onSelect: () => window.location.assign("/about"),
       },
       {
         type: "action",
-        label: "Contact & Resume",
+        label: "Contact",
         preview: SplitScreenPreview.Contact,
         onSelect: () => window.location.assign("/contact"),
+      },
+      {
+        type: "action",
+        label: "Resume PDF",
+        preview: SplitScreenPreview.Contact,
+        onSelect: () => window.open("/Vansh-SDE.pdf", "_blank"),
       },
     ],
     []
@@ -49,7 +55,7 @@ export const HomeView = Object.assign(_HomeView, {
   viewConfig: defineView({
     component: _HomeView,
     type: "split",
-    title: "Vansh Nagpal",
+    title: "iPod",
     isSplitScreen: true,
   }),
 });

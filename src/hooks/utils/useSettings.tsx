@@ -19,7 +19,7 @@ type SettingsContextType = [
 ];
 
 export const SettingsContext = createContext<SettingsContextType>([
-  { deviceTheme: "silver" },
+  { deviceTheme: "black" },
   () => {},
 ]);
 
@@ -58,7 +58,7 @@ export const SettingsProvider = ({
       const savedTheme = localStorage.getItem(DEVICE_COLOR_KEY) as DeviceThemeName;
       if (savedTheme) return { deviceTheme: savedTheme };
     }
-    return { deviceTheme: "silver" };
+    return { deviceTheme: "black" };
   });
 
   return (

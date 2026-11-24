@@ -6,15 +6,15 @@ export const Shell = styled.div<{ $deviceTheme: DeviceThemeName }>`
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 590px;
   width: 370px;
-  max-height: 37em;
-  margin: auto;
+  max-width: 100%;
+  margin: 0 auto;
   border-radius: 30px;
-  box-shadow: inset 0 0 2.4em #555;
+  box-shadow: inset 0 0 2.4em rgba(0, 0, 0, 0.9), 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.1);
   background: ${({ $deviceTheme }) => getTheme($deviceTheme).body.background};
-  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(250, 250, 250, 0.3)));
-  animation: descend 1.5s ease;
+  -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(60%, transparent), to(rgba(255, 255, 255, 0.15)));
+  animation: descend 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
 
   @media (prefers-color-scheme: dark) {
