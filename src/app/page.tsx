@@ -3,21 +3,11 @@
 import { Suspense, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
-import OSStatusBar from "@/components/os/OSStatusBar";
 import HomeHero from "@/components/home/HomeHero";
 import InteractiveArrow from "@/components/home/InteractiveArrow";
 import TactileControlHUD from "@/components/home/TactileControlHUD";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import CommandMenu from "@/components/ui/CommandMenu";
-import {
-  Home as HomeIcon,
-  Disc,
-  Briefcase,
-  Award,
-  User,
-  Mail,
-  FileText,
-} from "lucide-react";
 
 const Ipod = dynamic(() => import("@/components/Ipod/Ipod"), { ssr: false });
 
@@ -42,11 +32,11 @@ const MainStage = styled.main`
     radial-gradient(circle at 75% 40%, rgba(56, 142, 233, 0.09) 0%, transparent 60%),
     radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
   background-size: 100% 100%, 32px 32px;
-  padding: 24px 48px;
+  padding: 84px 48px 32px;
   box-sizing: border-box;
 
   @media (max-width: 1024px) {
-    padding: 24px 20px 96px;
+    padding: 72px 20px 96px;
     align-items: flex-start;
   }
 `;
@@ -91,16 +81,6 @@ const IpodColumn = styled.div<{ $highlight?: boolean }>`
   `}
 `;
 
-const NAV_ITEMS = [
-  { name: "Home", url: "/", icon: HomeIcon },
-  { name: "Projects", url: "/projects", icon: Disc },
-  { name: "Experience", url: "/experience", icon: Briefcase },
-  { name: "Honors", url: "/honors", icon: Award },
-  { name: "About", url: "/about", icon: User },
-  { name: "Contact", url: "/contact", icon: Mail },
-  { name: "Resume", url: "/Vansh-SDE.pdf", icon: FileText },
-];
-
 export default function Home() {
   const [highlightIpod, setHighlightIpod] = useState(false);
   const [commandMenuOpen, setCommandMenuOpen] = useState(false);
@@ -124,8 +104,8 @@ export default function Home() {
 
   return (
     <PageWrapper>
-      {/* 21st.dev / shadcn style Top OS Status Bar */}
-      <OSStatusBar title="00 · HOME — IPOD CLASSIC OS" />
+      {/* Tubelight Lamp Navbar from 21st.dev / shadcn */}
+      <NavBar />
 
       {/* Main Widescreen Studio Stage */}
       <MainStage>
@@ -148,9 +128,6 @@ export default function Home() {
           </IpodColumn>
         </StageContainer>
       </MainStage>
-
-      {/* Tubelight Lamp Navbar from 21st.dev / shadcn */}
-      <NavBar items={NAV_ITEMS} />
 
       {/* shadcn / cmdk Style Quick Jump Command Menu */}
       <CommandMenu

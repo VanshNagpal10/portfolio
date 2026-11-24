@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import OSStatusBar from "@/components/os/OSStatusBar";
+import { NavBar } from "@/components/ui/tubelight-navbar";
 import ShuffleDock from "@/components/os/ShuffleDock";
 import { CONTACT_LINKS, RESUME_INFO, CHASSIS_ENGRAVINGS } from "@/data/contact";
 import { playClickTick, playConfirmChime } from "@/utils/audio";
@@ -20,10 +20,10 @@ const PageWrapper = styled.div`
 const ContentContainer = styled.main`
   max-width: 960px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 84px 24px 40px;
 
   @media (max-width: 768px) {
-    padding: 24px 16px;
+    padding: 72px 16px 24px;
   }
 `;
 
@@ -274,7 +274,7 @@ export default function ContactPage() {
 
   return (
     <PageWrapper>
-      <OSStatusBar title="06 · Contact & Backplate" />
+      <NavBar />
 
       <ContentContainer>
         <Backplate

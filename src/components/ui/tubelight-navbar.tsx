@@ -3,7 +3,17 @@
 import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { LucideIcon } from "lucide-react"
+import { usePathname } from "next/navigation"
+import {
+  Home as HomeIcon,
+  Disc,
+  Briefcase,
+  Award,
+  User,
+  Mail,
+  FileText,
+  LucideIcon,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export interface NavItem {
@@ -13,13 +23,34 @@ export interface NavItem {
 }
 
 export interface NavBarProps {
-  items: NavItem[]
+  items?: NavItem[]
   className?: string
 }
 
-export function NavBar({ items, className }: NavBarProps) {
-  const [activeTab, setActiveTab] = useState(items[0]?.name ?? "")
+export const PORTFOLIO_NAV_ITEMS: NavItem[] = [
+  { name: "Home", url: "/", icon: HomeIcon },
+  { name: "Projects", url: "/projects", icon: Disc },
+  { name: "Experience", url: "/experience", icon: Briefcase },
+  { name: "Honors", url: "/honors", icon: Award },
+  { name: "About", url: "/about", icon: User },
+  { name: "Contact", url: "/contact", icon: Mail },
+  { name: "Resume", url: "/Vansh-SDE.pdf", icon: FileText },
+];
+
+export function NavBar({ items = PORTFOLIO_NAV_ITEMS, className }: NavBarProps) {
+  const pathname = usePathname()
+  const [activeTab, setActiveTab] = useState(() => {
+    const matched = items.find((item) => item.url === pathname)
+    return matched ? matched.name : (items[0]?.name ?? "")
+  })
   const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const matched = items.find((item) => item.url === pathname)
+    if (matched) {
+      setActiveTab(matched.name)
+    }
+  }, [pathname, items])
 
   useEffect(() => {
     const handleResize = () => {

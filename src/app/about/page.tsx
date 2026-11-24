@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import OSStatusBar from "@/components/os/OSStatusBar";
+import { NavBar } from "@/components/ui/tubelight-navbar";
 import ShuffleDock from "@/components/os/ShuffleDock";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import {
@@ -26,10 +26,10 @@ const PageWrapper = styled.div`
 const ContentContainer = styled.main`
   max-width: 1080px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 84px 24px 40px;
 
   @media (max-width: 768px) {
-    padding: 24px 16px;
+    padding: 72px 16px 24px;
   }
 `;
 
@@ -445,7 +445,7 @@ export default function AboutPage() {
 
   return (
     <PageWrapper>
-      <OSStatusBar title="05 · About & Leadership" />
+      <NavBar />
 
       <ContentContainer>
         <HeaderArea>
