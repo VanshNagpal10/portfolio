@@ -62,11 +62,11 @@ const PageWrapper = styled.div`
 const MainContent = styled.main`
   max-width: 1240px;
   margin: 0 auto;
-  padding: 96px 36px 64px;
+  padding: 108px 36px 64px;
   box-sizing: border-box;
 
   @media (max-width: 1024px) {
-    padding: 80px 20px 48px;
+    padding: 84px 20px 48px;
   }
 `;
 
@@ -460,10 +460,10 @@ export default function ProjectsPage() {
 
   const folderSheets = useMemo(
     () =>
-      activeProject.slides.slice(0, 4).map((sl) => ({
+      activeProject.slides.slice(0, 4).map((sl, idx) => ({
         image: sl.sheetImage,
         alt: `${activeProject.title} — ${sl.title}`,
-        code: sl.code,
+        code: `0${idx + 1}`,
         title: sl.title,
         detail: sl.detail,
       })),

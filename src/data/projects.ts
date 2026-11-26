@@ -187,8 +187,8 @@ export const PROJECTS: ProjectItem[] = [
       {
         id: "ping-1",
         code: "Slide 01",
-        title: "3D Packet Topology",
-        detail: "SceneKit Node Mesh",
+        title: "Packet Mesh",
+        detail: "SceneKit 3D",
         duration: "00:38",
         summary: "Interactive 3D routing board where physical impulses visualize packet travel across OSI layers.",
         telemetryLabel: "ENGINE",
@@ -209,8 +209,8 @@ export const PROJECTS: ProjectItem[] = [
       {
         id: "ping-2",
         code: "Slide 02",
-        title: "Tactile iPad HUD",
-        detail: "SwiftUI Stage Overlay",
+        title: "Tactile HUD",
+        detail: "SwiftUI Stage",
         duration: "00:52",
         summary: "Minimalist telemetry HUD displaying RTT, jitter, and packet loss in real time during levels.",
         telemetryLabel: "INTERFACE",
@@ -231,8 +231,8 @@ export const PROJECTS: ProjectItem[] = [
       {
         id: "ping-3",
         code: "Slide 03",
-        title: "OSI Handshake Sim",
-        detail: "TCP / UDP Routing",
+        title: "Handshake Sim",
+        detail: "TCP / UDP",
         duration: "00:44",
         summary: "Interactive congestion & handshake challenges demonstrating reliable vs. low-latency transmission.",
         telemetryLabel: "SIMULATION",
@@ -253,8 +253,8 @@ export const PROJECTS: ProjectItem[] = [
       {
         id: "ping-4",
         code: "Slide 04",
-        title: "Cupertino Selection",
-        detail: "SSC '26 Benchmark",
+        title: "SSC '26 Honor",
+        detail: "Apple Global",
         duration: "00:30",
         summary: "Lightweight native bundle built to run offline under Apple's 3-minute playground evaluation limit.",
         telemetryLabel: "FOOTPRINT",
